@@ -1,12 +1,15 @@
 {
   "dependencies": {
     "bootstrap-icons": "^1.10.4",
-    "reactstrap": "^9.1.8"
+    "dotenv": "^16.0.3",
+    "md5": "^2.3.0",
+    "mysql": "^2.18.1",
+    "reactstrap": "^9.1.8",
+    "util": "^0.12.5"
   },
   "name": "proyecto-utn",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

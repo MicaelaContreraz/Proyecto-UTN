@@ -6,10 +6,15 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+
+require('dotenv').config();
+var session = require("express-session");
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var loginRouter = require("./routes/admin/login");
-var session = require("express-session");
+var adminRouter = require('./routes/admin/novedades');
+
 
 var app = express();
 
@@ -23,17 +28,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(
-  session({
+app.use(session({
     secret: "hsdhuyrbfjkfkkdfsjad",
     resave: false,
     saveUninitialized: true,
-  })
-);
-/*
+  }));
+
+secured = async (req, res, next) => {
+  try {
+    //console.log(req.session.id_usuario);
+    if (req.session.id_usuario) {
+      next();
+    } else {
+      res.redirect('/admin/login');
+    } //cierro else
+  } catch (error){
+  console.log(error);
+  } // cierro catch
+}
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-*/
+app.use("/admin/login", loginRouter);
+app.use('/admin/novedades', secured, adminRouter);
+
+
+/*
 app.get("/", function (req, res) {
   var conocido = Boolean(req.session.nombre);
   res.render("index", {
@@ -52,9 +72,9 @@ app.get("/salir", function (req, res) {
   req.session.destroy();
   res.redirect("/");
 });
+*/
 
-app.use("/admin/login", loginRouter);
-
+/*
 app.get("/precios", (req, res, next) => {
   res.send("Hola soy la pagina de precios");
 });
@@ -64,11 +84,15 @@ app.get("/usuarios", (req, res, next) => {
 app.get("/promociones", (req, res, next) => {
   res.send("Hola soy la pagina de promociones");
 });
+*/
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function (err, req, res, next) {
